@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TTL Synergia Action Awards</title>
     
+    <!-- Official Favicon (SVG representation of your seal) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230067B2'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23FFF4DC' stroke-width='2'/%3E%3Cpath d='M50 20 L75 80 L25 80 Z' fill='%23FF9E00'/%3E%3Ccircle cx='50' cy='55' r='15' fill='%23FFF4DC'/%3E%3C/svg%3E">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,24 +45,11 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        @media (pointer: fine) {
-            body { cursor: none; }
-            a, button, input, select, textarea { cursor: none; }
-        }
-
         h1, h2, h3, .display { font-family: var(--f-sans); font-weight: 800; text-transform: uppercase; line-height: 1; letter-spacing: -0.02em; }
         .serif { font-family: var(--f-serif); text-transform: none; font-weight: 400; font-style: italic; letter-spacing: 0; color: var(--amber); }
 
         a { color: inherit; text-decoration: none; }
         img { display: block; max-width: 100%; object-fit: cover; }
-
-        /* --- CUSTOM CURSOR --- */
-        .cursor { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
-        .cursor-dot { position: absolute; top: 0; left: 0; width: 8px; height: 8px; background: var(--amber); border-radius: 50%; transform: translate(-50%, -50%); }
-        .cursor-ring { position: absolute; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(255, 158, 0, 0.5); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s; }
-        .cursor.hovered .cursor-ring { width: 70px; height: 70px; background: rgba(255, 158, 0, 0.1); border-color: var(--amber); }
-        .cursor.hovered .cursor-dot { opacity: 0; }
-        @media (pointer: fine) { .cursor { display: block; } }
 
         /* --- PRELOADER --- */
         .preloader { position: fixed; inset: 0; background: var(--night); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
@@ -68,7 +58,11 @@
         /* --- NAVIGATION --- */
         nav { position: fixed; top: 0; width: 100%; padding: 1.5rem var(--gut); display: flex; justify-content: space-between; align-items: center; z-index: 1000; transition: background 0.4s; }
         nav.scrolled { background: rgba(0, 24, 51, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; }
+        
+        .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-img { height: 40px; width: auto; border-radius: 50%; }
+        .logo-text { font-size: 1.3rem; font-weight: 800; letter-spacing: 1px; line-height: 1; }
+
         .nav-links { display: flex; gap: 2.5rem; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         .nav-links a { transition: color 0.3s; position: relative; }
         .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--amber); transition: width 0.3s; }
@@ -140,101 +134,20 @@
         .judge-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, var(--night) 10%, transparent 100%); z-index: 1; }
 
         /* =========================================================
-           NEW HIGHLIGHTS SECTION (EDITORIAL BENTO GRID)
+           HIGHLIGHTS SECTION (RESTORED ALL 6 ITEMS)
            ========================================================= */
-        .highlights-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 350px;
-            gap: 1.5rem;
-        }
+        .highlights-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 350px; gap: 1.5rem; }
+        .highlight-card { position: relative; border-radius: 20px; overflow: hidden; clip-path: inset(100% 0 0 0); }
+        .highlight-card.large { grid-column: span 2; grid-row: span 2; }
+        .highlight-text-block { display: flex; flex-direction: column; justify-content: center; padding: 3rem; background: rgba(0, 40, 87, 0.3); border: 1px solid rgba(255, 158, 0, 0.2); border-radius: 20px; backdrop-filter: blur(10px); }
+        .highlight-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); transform-origin: center; }
+        .highlight-card:hover img { transform: scale(1.08); }
+        .highlight-content { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,24,51,0.95) 0%, rgba(0,24,51,0.4) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 3rem; opacity: 0.8; transition: opacity 0.4s ease; }
+        .highlight-card:hover .highlight-content { opacity: 1; background: linear-gradient(to top, rgba(0,24,51,1) 0%, rgba(0,24,51,0.6) 60%, transparent 100%); }
+        .highlight-content h3 { font-size: 2rem; color: var(--cream); transform: translateY(20px); transition: transform 0.4s ease; }
+        .highlight-content p { color: var(--amber); font-family: var(--f-serif); font-size: 1.2rem; margin-top: 0.5rem; transform: translateY(20px); opacity: 0; transition: transform 0.4s ease, opacity 0.4s ease; }
+        .highlight-card:hover .highlight-content h3, .highlight-card:hover .highlight-content p { transform: translateY(0); opacity: 1; }
 
-        .highlight-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: none;
-            /* Animation setup */
-            clip-path: inset(100% 0 0 0); 
-        }
-
-        /* Make the first item span 2 columns and 2 rows */
-        .highlight-card.large {
-            grid-column: span 2;
-            grid-row: span 2;
-        }
-
-        /* Text Block inserted into the grid */
-        .highlight-text-block {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 3rem;
-            background: rgba(0, 40, 87, 0.3);
-            border: 1px solid rgba(255, 158, 0, 0.2);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .highlight-text-block h3 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .highlight-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            /* Parallax setup */
-            transform-origin: center;
-        }
-
-        .highlight-card:hover img {
-            transform: scale(1.08);
-        }
-
-        .highlight-content {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,24,51,0.95) 0%, rgba(0,24,51,0.4) 50%, transparent 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 3rem;
-            opacity: 0.8;
-            transition: opacity 0.4s ease;
-        }
-
-        .highlight-card:hover .highlight-content {
-            opacity: 1;
-            background: linear-gradient(to top, rgba(0,24,51,1) 0%, rgba(0,24,51,0.6) 60%, transparent 100%);
-        }
-
-        .highlight-content h3 {
-            font-size: 2rem;
-            color: var(--cream);
-            transform: translateY(20px);
-            transition: transform 0.4s ease;
-        }
-
-        .highlight-content p {
-            color: var(--amber);
-            font-family: var(--f-serif);
-            font-size: 1.2rem;
-            margin-top: 0.5rem;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: transform 0.4s ease, opacity 0.4s ease;
-        }
-
-        .highlight-card:hover .highlight-content h3,
-        .highlight-card:hover .highlight-content p {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* Responsive Highlights */
         @media (max-width: 1024px) {
             .highlights-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 300px; }
             .highlight-card.large { grid-column: span 2; grid-row: span 1; }
@@ -243,12 +156,38 @@
             .highlights-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
             .highlight-card { height: 350px; }
             .highlight-card.large { grid-column: span 1; height: 400px; }
-            .highlight-content { padding: 2rem; }
-            .highlight-content h3 { font-size: 1.5rem; }
         }
 
-        /* Partner & Form */
-        .partner-wrap { position: relative; background: var(--deep); }
+        /* =========================================================
+           EVENT SCHEDULE (TIMELINE)
+           ========================================================= */
+        .schedule-wrap { background: var(--deep); position: relative; }
+        .timeline { position: relative; max-width: 900px; margin: 0 auto; padding: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 100%; background: rgba(255, 158, 0, 0.3); }
+        .timeline-item { position: relative; margin-bottom: 3rem; width: 50%; padding: 0 3rem; }
+        .timeline-item:nth-child(odd) { left: 0; text-align: right; }
+        .timeline-item:nth-child(even) { left: 50%; text-align: left; }
+        .timeline-item::after { content: ''; position: absolute; top: 20px; width: 16px; height: 16px; background: var(--amber); border-radius: 50%; border: 3px solid var(--deep); box-shadow: 0 0 10px var(--amber); z-index: 1; }
+        .timeline-item:nth-child(odd)::after { right: -8px; }
+        .timeline-item:nth-child(even)::after { left: -8px; }
+        .time-box { display: inline-block; padding: 0.5rem 1rem; background: var(--amber); color: var(--night); font-weight: 800; border-radius: 5px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .timeline-content { background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s, border-color 0.3s; }
+        .timeline-content:hover { transform: translateY(-5px); border-color: var(--amber); }
+        .timeline-content h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--cream); }
+        .timeline-content p { color: #9ca3af; font-size: 0.95rem; }
+        .timeline-content .speaker { display: block; margin-top: 1rem; color: var(--amber); font-family: var(--f-serif); font-size: 1.1rem; }
+
+        @media (max-width: 768px) {
+            .timeline::before { left: 20px; }
+            .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; text-align: left !important; }
+            .timeline-item:nth-child(even) { left: 0; }
+            .timeline-item::after { left: 12px !important; right: auto !important; }
+        }
+
+        /* =========================================================
+           PARTNER & FORM (RESTORED BULLET POINTS)
+           ========================================================= */
+        .partner-wrap { position: relative; background: var(--night); }
         .partner-wrap .bg-image { background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop'); opacity: 0.15; }
         .form-group { margin-bottom: 1.5rem; }
         .form-input { width: 100%; padding: 1.2rem; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: var(--cream); font-family: var(--f-sans); font-size: 1rem; outline: none; transition: border 0.3s, background 0.3s; }
@@ -273,9 +212,7 @@
         .newsletter-form button:hover { background: var(--cream); }
         .footer-bottom { max-width: var(--max); margin: 4rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; color: #6b7280; font-size: 0.9rem; flex-wrap: wrap; gap: 1rem; }
 
-        @media (max-width: 1024px) {
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-        }
+        @media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 900px) {
             .about-grid { grid-template-columns: 1fr; }
             .pinned-wrap { height: auto; display: block; padding: 4rem 0; }
@@ -294,24 +231,23 @@
 </head>
 <body>
 
-    <div class="cursor">
-        <div class="cursor-dot"></div>
-        <div class="cursor-ring"></div>
-    </div>
-
     <div class="preloader">
         <div class="pl-count"><span id="plNum">0</span>%</div>
     </div>
 
     <nav id="navbar">
-        <div class="logo">TTL SYNERGIA</div>
+        <a href="#" class="logo-container">
+            <!-- Make sure logo.png is in the same folder as this file -->
+            <img src="logo.png" alt="TTL Logo" class="logo-img" onerror="this.style.display='none'; document.querySelector('.logo-text').style.display='block';">
+            <div class="logo-text" style="display:none;">TTL SYNERGIA</div>
+        </a>
         <button class="menu-btn" onclick="document.getElementById('navLinks').classList.toggle('active')">☰</button>
         <div class="nav-links" id="navLinks">
             <a href="#about" onclick="closeMenu()">About</a>
             <a href="#nominees" onclick="closeMenu()">Nominees</a>
             <a href="#gallery" onclick="closeMenu()">Highlights</a>
+            <a href="#schedule" onclick="closeMenu()">Schedule</a>
             <a href="#partner" onclick="closeMenu()">Partner</a>
-            <a href="#faq" onclick="closeMenu()">FAQ</a>
         </div>
     </nav>
 
@@ -400,28 +336,24 @@
             <div class="judge-card reveal-text">
                 <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" class="judge-img" alt="Judge">
                 <div class="judge-info">
-                    <h3>Jane Doe</h3>
+                    <h3>Mrs. Jane Doe</h3>
                     <p class="serif">Head of Tech Panel</p>
                 </div>
             </div>
             <div class="judge-card reveal-text">
                 <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop" class="judge-img" alt="Judge">
                 <div class="judge-info">
-                    <h3>David Osei</h3>
+                    <h3>Mr. David Osei</h3>
                     <p class="serif">Trade & Commerce Lead</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ==========================================
-         NEW HIGHLIGHTS SECTION
-         ========================================== -->
+    <!-- HIGHLIGHTS (All 6 Boxes Restored) -->
     <section class="section" id="gallery">
         <h2 class="section-header reveal-text">Event <span class="serif">Highlights</span></h2>
-        
         <div class="highlights-grid">
-            <!-- Large Image -->
             <div class="highlight-card large">
                 <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop" alt="Red Carpet">
                 <div class="highlight-content">
@@ -429,16 +361,12 @@
                     <p>Welcoming the industry's brightest stars and key stakeholders.</p>
                 </div>
             </div>
-
-            <!-- Text Block -->
             <div class="highlight-text-block reveal-text">
                 <h3 class="serif" style="font-size: 2.5rem; color: var(--amber);">A Night of Prestige</h3>
                 <p style="margin-top: 1rem; font-size: 1.1rem; color: var(--cream); opacity: 0.8;">
                     Relive the magic of last year's TTL Synergia Awards. From the electrifying keynotes to the emotional acceptance speeches, every moment was crafted to celebrate excellence.
                 </p>
             </div>
-
-            <!-- Image -->
             <div class="highlight-card">
                 <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop" alt="Main Stage">
                 <div class="highlight-content">
@@ -446,8 +374,6 @@
                     <p>Unforgettable performances and award presentations.</p>
                 </div>
             </div>
-
-            <!-- Image -->
             <div class="highlight-card">
                 <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop" alt="Networking">
                 <div class="highlight-content">
@@ -455,17 +381,13 @@
                     <p>Connecting visionaries and leaders from across the continent.</p>
                 </div>
             </div>
-
-            <!-- Image -->
             <div class="highlight-card">
-                <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop" alt="After Party">
+                <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop" alt="The Celebration">
                 <div class="highlight-content">
                     <h3>The Celebration</h3>
                     <p>Dancing the night away with the best in the industry.</p>
                 </div>
             </div>
-
-            <!-- Image -->
             <div class="highlight-card">
                 <img src="https://images.unsplash.com/photo-1579394120261-725d3bc593b0?q=80&w=2070&auto=format&fit=crop" alt="Trade Exhibition">
                 <div class="highlight-content">
@@ -476,7 +398,64 @@
         </div>
     </section>
 
-    <!-- PARTNER -->
+    <!-- EVENT SCHEDULE -->
+    <section class="schedule-wrap" id="schedule">
+        <div class="section">
+            <h2 class="section-header reveal-text" style="text-align: center;">Event <span class="serif">Schedule</span></h2>
+            <p class="reveal-text" style="text-align: center; max-width: 600px; margin: 0 auto 4rem; color: #9ca3af;">
+                * Please note that the schedule is subject to change. Times and speakers will be updated as we get closer to the event.
+            </p>
+            
+            <div class="timeline">
+                <div class="timeline-item reveal-text">
+                    <div class="time-box">09:00 AM</div>
+                    <div class="timeline-content">
+                        <h3>Arrival & Red Carpet</h3>
+                        <p>Guest registration, welcome drinks, and press interviews.</p>
+                        <span class="speaker">Hosted by: Mrs. Sarah Jenkins</span>
+                    </div>
+                </div>
+                
+                <div class="timeline-item reveal-text">
+                    <div class="time-box">10:30 AM</div>
+                    <div class="timeline-content">
+                        <h3>Opening Keynote</h3>
+                        <p>Setting the stage: The future of cross-sector synergy in Africa.</p>
+                        <span class="speaker">Speaker: Dr. Solape A.</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal-text">
+                    <div class="time-box">12:00 PM</div>
+                    <div class="timeline-content">
+                        <h3>Panel Discussion</h3>
+                        <p>Innovation in Tech: Navigating the next decade of digital growth.</p>
+                        <span class="speaker">Panelists: Mr. David Osei, Mrs. Jane Doe</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal-text">
+                    <div class="time-box">02:00 PM</div>
+                    <div class="timeline-content">
+                        <h3>Trade Exhibition Opens</h3>
+                        <p>Showcasing cutting-edge products and networking with industry leaders.</p>
+                        <span class="speaker">Location: Main Exhibition Hall</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal-text">
+                    <div class="time-box">07:00 PM</div>
+                    <div class="timeline-content">
+                        <h3>The Grand Awards Gala</h3>
+                        <p>Dinner, live performances, and the presentation of the 2027 TTL Synergia Awards.</p>
+                        <span class="speaker">Hosted by: Mr. John Rivers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARTNER FORM (Bullet points restored) -->
     <section class="partner-wrap" id="partner">
         <div class="bg-image"></div>
         <div class="section">
@@ -484,31 +463,44 @@
                 <div class="reveal-text">
                     <h2 class="section-header">Partner With <br><span class="serif">The Future</span></h2>
                     <p style="margin-bottom: 2rem;">Align your brand with innovation, leadership, and the future of development. Get direct access to key stakeholders, government officials, and thousands of attendees.</p>
-                    <ul style="list-style: none; line-height: 2.5;">
+                    
+                    <ul style="list-style: none; line-height: 2.5; margin-bottom: 2rem;">
                         <li>✓ Brand visibility across all media</li>
                         <li>✓ Speaking opportunities on high-level panels</li>
                         <li>✓ VIP networking sessions</li>
                         <li>✓ Premium exhibition space</li>
                     </ul>
+
+                    <!-- OFFICIAL CONTACT INFO FROM LETTERHEAD -->
+                    <ul style="list-style: none; line-height: 2; color: #9ca3af; font-size: 0.95rem;">
+                        <li>📞 +234 803 337 0666</li>
+                        <li>📞 +234 903 247 8048</li>
+                        <li>📞 +234 916 489 849 8402</li>
+                        <li>📞 +44 7359 107 395</li>
+                        <li>✉️ info@ttlsynergiaawards.org</li>
+                        <li>📍 Blk D Suite 1 & 2, Local Airport Office Complex, 118, Agege Motor Road, Ikeja, Lagos.</li>
+                    </ul>
                 </div>
                 
                 <div class="reveal-text" style="background: rgba(0,24,51,0.8); padding: 3rem; border-radius: 20px; border: 1px solid rgba(255,158,0,0.3); backdrop-filter: blur(10px);">
                     <h3 style="font-size: 2rem; margin-bottom: 2rem;">Express Interest</h3>
-                    <form onsubmit="event.preventDefault(); alert('Message Sent!');">
+                    
+                    <form id="interestForm" action="https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT" method="POST">
                         <div class="form-group">
-                            <select class="form-input" required>
+                            <select name="interest_type" class="form-input" required>
                                 <option value="" disabled selected>I am interested in...</option>
-                                <option value="sponsor">Sponsorship</option>
-                                <option value="exhibit">Exhibiting</option>
-                                <option value="attend">Attending</option>
-                                <option value="nominate">Nominating</option>
+                                <option value="Sponsorship">Sponsorship</option>
+                                <option value="Exhibiting">Exhibiting</option>
+                                <option value="Attending">Attending</option>
+                                <option value="Nominating">Nominating</option>
                             </select>
                         </div>
-                        <div class="form-group"><input type="text" class="form-input" placeholder="Full Name" required></div>
-                        <div class="form-group"><input type="email" class="form-input" placeholder="Email Address" required></div>
-                        <div class="form-group"><input type="text" class="form-input" placeholder="Company / Organization"></div>
-                        <div class="form-group"><textarea class="form-input" rows="4" placeholder="Your Message"></textarea></div>
-                        <button type="submit" class="cta-btn magnetic" style="width: 100%;">Submit Enquiry</button>
+                        <div class="form-group"><input type="text" name="name" class="form-input" placeholder="Full Name" required></div>
+                        <div class="form-group"><input type="email" name="email" class="form-input" placeholder="Email Address" required></div>
+                        <div class="form-group"><input type="text" name="company" class="form-input" placeholder="Company / Organization"></div>
+                        <div class="form-group"><textarea name="message" class="form-input" rows="4" placeholder="Your Message"></textarea></div>
+                        <button type="submit" id="submitBtn" class="cta-btn magnetic" style="width: 100%;">Submit Enquiry</button>
+                        <p id="formStatus" style="text-align: center; margin-top: 1rem; color: var(--amber); font-weight: 600; display: none;"></p>
                     </form>
                 </div>
             </div>
@@ -550,9 +542,9 @@
             </div>
             <div class="footer-col">
                 <h4>Contact Us</h4>
-                <p>info@ttlsynergia.org</p>
-                <p>+234 (0) 000 000 0000</p>
-                <p>Lagos, Nigeria</p>
+                <p>info@ttlsynergiaawards.org</p>
+                <p>+234 803 337 0666</p>
+                <p>Blk D Suite 1 & 2, Local Airport Office Complex, Ikeja, Lagos.</p>
             </div>
             <div class="footer-col">
                 <h4>Newsletter</h4>
@@ -607,24 +599,7 @@
             if (plNum) plNum.innerText = count;
         }, 50);
 
-        // 3. Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorRing = document.querySelector('.cursor-ring');
-
-        if (window.matchMedia("(pointer: fine)").matches) {
-            document.addEventListener('mousemove', (e) => {
-                gsap.to(cursorDot, { x: e.clientX, y: e.clientY, duration: 0.1 });
-                gsap.to(cursorRing, { x: e.clientX, y: e.clientY, duration: 0.3 });
-            });
-
-            document.querySelectorAll('a, button, .judge-card, .highlight-card, .pillar-card').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-            });
-        }
-
-        // 4. Magnetic Buttons
+        // 3. Magnetic Buttons (No custom cursor logic anymore)
         document.querySelectorAll('.magnetic').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
@@ -634,6 +609,54 @@
             });
             btn.addEventListener('mouseleave', () => {
                 gsap.to(btn, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+
+        // 4. Form Submission Handling
+        const form = document.getElementById('interestForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formStatus = document.getElementById('formStatus');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if(form.action.includes("YOUR_FORMSPREE_ENDPOINT")) {
+                submitBtn.innerText = "Sending...";
+                setTimeout(() => {
+                    submitBtn.innerText = "Message Sent! (Demo)";
+                    formStatus.innerText = "Form connected in demo mode. Please set up Formspree to receive emails.";
+                    formStatus.style.display = "block";
+                    form.reset();
+                    setTimeout(() => { submitBtn.innerText = "Submit Enquiry"; }, 3000);
+                }, 1000);
+                return;
+            }
+
+            const formData = new FormData(form);
+            submitBtn.innerText = "Sending...";
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    submitBtn.innerText = "Message Sent!";
+                    formStatus.innerText = "Thank you! Your enquiry has been received. We will be in touch.";
+                    formStatus.style.display = "block";
+                    form.reset();
+                    setTimeout(() => { submitBtn.innerText = "Submit Enquiry"; }, 3000);
+                } else {
+                    response.json().then(data => {
+                        submitBtn.innerText = "Error";
+                        formStatus.innerText = "Oops! There was a problem. " + (data.errors ? data.errors.map(e => e.message).join(", ") : "");
+                        formStatus.style.display = "block";
+                    });
+                }
+            }).catch(error => {
+                submitBtn.innerText = "Error";
+                formStatus.innerText = "Network error. Please try again later.";
+                formStatus.style.display = "block";
             });
         });
 
@@ -665,9 +688,7 @@
                 { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 0.2 }
             );
 
-            // --- NEW HIGHLIGHTS ANIMATIONS ---
-            
-            // 1. Clip-path Curtain Reveal for Images
+            // Highlights Clip-path
             gsap.utils.toArray('.highlight-card').forEach(card => {
                 gsap.fromTo(card,
                     { clipPath: 'inset(100% 0 0 0)' },
@@ -675,27 +696,19 @@
                         clipPath: 'inset(0% 0 0 0)',
                         duration: 1.2,
                         ease: "power4.out",
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top 85%",
-                        }
+                        scrollTrigger: { trigger: card, start: "top 85%" }
                     }
                 );
             });
 
-            // 2. Image Parallax inside the cards
+            // Image Parallax
             gsap.utils.toArray('.highlight-card img').forEach(img => {
                 gsap.fromTo(img,
                     { yPercent: -10 },
                     {
                         yPercent: 10,
                         ease: "none",
-                        scrollTrigger: {
-                            trigger: img.parentElement,
-                            start: "top bottom",
-                            end: "bottom top",
-                            scrub: true
-                        }
+                        scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true }
                     }
                 );
             });
